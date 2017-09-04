@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1,minimum-scale=1,user-scalable=no">
+    <title>follow-mouse.html</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .box {
+            width: 200px;
+            height: 200px;
+            box-sizing: border-box;
+            border: 1px red solid;
+            display: flex;
+            margin: 100px auto;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .box div {
+            flex: 1;
+        }
+        
+        .box div:nth-child(1) {
+            background-color: cyan;
+        }
+        /* .box div:nth-child(2) {
+            background-color: rebeccapurple;
+        }
+        
+        .box div:nth-child(3) {
+            background-color: red;
+        }
+         */
+        
+        .cover {
+            position: absolute;
+            top: 0;
+            left: -200px;
+            width: 200px;
+            height: 200px;
+            background-color: magenta;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <div>1</div>
+        <!-- <div>2</div>
+        <div>3</div> -->
+        <div class="cover"></div>
+    </div>
+
+
+</body>
+<script>
+    //先拿到鼠标坐标
+    var box = document.querySelector('.box');
+    var cover = document.querySelector('.cover');
+    var boxWidth = box.offsetWidth * 1 / 2 + 100;
+    var boxTop = box.offsetTop;
+    var boxLeft = box.offsetLeft;
+
+
+
+    box.onmouseenter = function(e, callback) {
+        if (box.classList.contains('loading')) {
+            return;
+        }
+        var mouseX = e.pageX;
+        var mouseY = e.pageY;
+        var centerX = document.body.offsetWidth * 1 / 2;
+        var centerY = boxWidth;
+        var offsetX = mouseX - centerX;
+        var offsetY = mouseY - centerY;
+        var angle = Math.atan2(offsetY, offsetX) * 180 / Math.PI;
+        // box.classList.add('loading')
+        //    callback(angle);
+        if (angle <= 45 && angle >= -45) {
+            var moveX = boxWidth;
+            var moveY = 0;
+            var timerid = setInterval(function() {
+                moveX -= 8;
+                if (moveX <= 0) {
+                    clearInterval(timerid);
+
+                }
+                cover.style.left = moveX + 'px';
+                cover.style.top = moveY + 'px';
+            }, 20)
+            console.log(0)
+
+        }
+        if (angle >= 45 && angle <= 135) {
+            console.log(1);
+            var moveX = 0;
+            var moveY = boxWidth;
+            var timerid = setInterval(function() {
+                moveY -= 8;
+                if (moveY <= 0) {
+                    clearInterval(timerid);
+
+                }
+                cover.style.left = moveX + 'px';
+                cover.style.top = moveY + 'px';
+            }, 20)
+
+        }
+        if ((angle <= 180 && angle >= 135) || (angle >= -180 && angle <= -135)) {
+            var moveX = -boxWidth;
+            var moveY = 0;
+            var timerid = setInterval(function() {
+                moveX += 8;
+                if (moveX >= 0) {
+                    clearInterval(timerid);
+
+                }
+                cover.style.left = moveX + 'px';
+                cover.style.top = moveY + 'px';
+            }, 20)
+
+            console.log(2);
+        }
+        if (angle <= -45 && angle >= -135) {
+            console.log(3);
+            var moveX = 0;
+            var moveY = -boxWidth;
+            var timerid = setInterval(function() {
+                moveY += 8;
+                if (moveY >= 0) {
+                    clearInterval(timerid);
+
+                }
+                cover.style.left = moveX + 'px';
+                cover.style.top = moveY + 'px';
+            }, 20)
+
+        }
+    }
+</script>
+
+</html>
